@@ -1,23 +1,24 @@
- body {
-      font-family: Arial, sans-serif;
-    }
+body {
+  font-family: Arial, sans-serif;
+}
 
-    .top-header {
-      background-color: #f8f9fa;
-      padding: 15px 0;
-      border-bottom: 1px solid #ddd;
-    }
+.top-header {
+  background-color: #f8f9fa;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      padding: 0 20px;
-    }
-    .info-box {
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0 20px;
+}
+
+.info-box {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
@@ -43,66 +44,65 @@
 
 .info-item a:hover {
   color: #000000;
-
-}    .logo {
-      display: flex;
-      align-items: center;
-
-    }
-
-    .circle-letter {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      background-color: #007bff;
-      color: white;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 40px;
-      font-weight: bold;
-      font-style: normal;
-    }
-
-    .logo-text {
-      font-size: 24px;
-      font-weight: bold;
-      color: #2a56bb;
-    }
-
-    .book-btn {
-      background-color: #28a745;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s ease;
-    }
-
-    .book-btn:hover {
-      background-color: #218838;
-    }
-     .login {
-      background-color: rgb(24, 105, 186);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s ease;
-    }
-.login a{
-  color:white;
-  list-style-type: none;
-  text-decoration: none;
 }
-    .login:hover {
-      background-color: rgb(7, 125, 242);
-    }
 
-  .menu {
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.circle-letter {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2a56bb;
+}
+
+.book-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.book-btn:hover {
+  background-color: #218838;
+}
+
+.login {
+  background-color: rgb(24, 105, 186);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.login:hover {
+  background-color: rgb(7, 125, 242);
+}
+
+.menu {
   background-color: #007bff;
   height: 50px;
   display: flex;

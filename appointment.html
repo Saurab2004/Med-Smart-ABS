@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book Appointment - Med Smart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f7f7f7;
+      border-radius: 8px;
+    }
+    form label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    input[type="submit"] {
+      background-color: #28a745;
+      color: white;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #218838;
+    }
+    h3 {
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Book an Appointment</h2>
+
+  <form action="appointment.php" method="POST">
+    <label for="name">Name:</label>
+    <input id="name" type="text" name="name" required />
+
+    <label for="age">Age:</label>
+    <input id="age" type="number" name="age" min="0" required />
+
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender" required>
+      <option value="">--Select--</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="department">Department:</label>
+    <select id="department" name="department" required>
+      <option value="">--Select--</option>
+      <option value="General Checkup">General Checkup</option>
+      <option value="Neurology">Neurology</option>
+      <option value="Cardiology">Cardiology</option>
+      <option value="Orthopedic">Orthopedic</option>
+    </select>
+
+    <label for="contact_number">Contact Number:</label>
+    <input id="contact_number" type="tel" name="contact_number" pattern="[0-9+()-\s]{7,}" required />
+
+    <label for="email">Email:</label>
+    <input id="email" type="email" name="email" required />
+
+    <label for="blood_group">Blood Group:</label>
+    <input id="blood_group" type="text" name="blood_group" placeholder="e.g. A+, O-" required />
+
+    <label for="appointment_date">Appointment Date:</label>
+    <input id="appointment_date" type="date" name="appointment_date" required />
+
+    <label for="appointment_time">Appointment Time:</label>
+    <input id="appointment_time" type="time" name="appointment_time" required />
+
+    <input type="submit" value="Book Appointment" />
+  </form>
+  </div>
+
+</body>
+</html>
