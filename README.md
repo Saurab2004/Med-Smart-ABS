@@ -22,7 +22,7 @@ Started Date :
 Date 2025/07/03 
  index.html, style.css, script.js,
 
- /// Database name : MedSmart
+ /// Database name : medSmart
 
  database table :appointments
 
