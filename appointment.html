@@ -7,11 +7,36 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 500px;
+      max-width: 900px; /* wider for two columns */
       margin: 30px auto;
       padding: 20px;
       background: #f7f7f7;
       border-radius: 8px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      gap: 40px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    form {
+      flex: 1;
+    }
+    .payment-info {
+      flex: 1;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 8px;
+      padding: 20px;
+      color: #856404;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     form label {
       display: block;
@@ -24,6 +49,7 @@
       margin-top: 4px;
       border-radius: 5px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
     input[type="submit"] {
       background-color: #28a745;
@@ -37,57 +63,105 @@
     input[type="submit"]:hover {
       background-color: #218838;
     }
-    h3 {
-      color: green;
+    .qr img {
+      width: 100%;
+      max-width: 250px;
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .note-box {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 5px;
+      color: #856404;
       text-align: center;
+      width: 100%;
+    }
+    /* Small text below input */
+    small {
+      color: #dc3545;
+      font-size: 0.9em;
+      margin-top: 4px;
+      display: block;
     }
   </style>
 </head>
 <body>
-<div class="container">
+
   <h2>Book an Appointment</h2>
 
-  <form action="appointment.php" method="POST">
-    <label for="name">Name:</label>
-    <input id="name" type="text" name="name" required />
+  <div class="container">
 
-    <label for="age">Age:</label>
-    <input id="age" type="number" name="age" min="0" required />
+    <!-- Form Section -->
+    <form action="appointment.php" method="POST">
+      <div class="note-box">
+        <strong>Note:</strong> Appointment fee is <strong>Rs. 500</strong>. No refund after booking. Please arrive at least <strong>10 minutes earlier</strong> than your appointment time.
+      </div>
 
-    <label for="gender">Gender:</label>
-    <select id="gender" name="gender" required>
-      <option value="">--Select--</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Other">Other</option>
-    </select>
+      <label for="name">Name:</label>
+      <input id="name" type="text" name="name" required />
 
-    <label for="department">Department:</label>
-    <select id="department" name="department" required>
-      <option value="">--Select--</option>
-      <option value="General Checkup">General Checkup</option>
-      <option value="Neurology">Neurology</option>
-      <option value="Cardiology">Cardiology</option>
-      <option value="Orthopedic">Orthopedic</option>
-    </select>
+      <label for="age">Age:</label>
+      <input id="age" type="number" name="age" min="0" required />
 
-    <label for="contact_number">Contact Number:</label>
-    <input id="contact_number" type="tel" name="contact_number" pattern="[0-9+()-\s]{7,}" required />
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" required>
+        <option value="">--Select--</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
 
-    <label for="email">Email:</label>
-    <input id="email" type="email" name="email" required />
+      <label for="department">Department:</label>
+      <select id="department" name="department" required>
+        <option value="">--Select--</option>
+        <option value="General Checkup">General Checkup</option>
+        <option value="Neurology">Neurology</option>
+        <option value="Cardiology">Cardiology</option>
+        <option value="Orthopedic">Orthopedic</option>
+      </select>
 
-    <label for="blood_group">Blood Group:</label>
-    <input id="blood_group" type="text" name="blood_group" placeholder="e.g. A+, O-" required />
+      <label for="contact_number">Contact Number:</label>
+      <input id="contact_number" type="tel" name="contact_number" pattern="[0-9+()-\s]{7,}" required />
 
-    <label for="appointment_date">Appointment Date:</label>
-    <input id="appointment_date" type="date" name="appointment_date" required />
+      <label for="email">Email:</label>
+      <input id="email" type="email" name="email" required />
 
-    <label for="appointment_time">Appointment Time:</label>
-    <input id="appointment_time" type="time" name="appointment_time" required />
+      <label for="blood_group">Blood Group:</label>
+      <input id="blood_group" type="text" name="blood_group" placeholder="e.g. A+, O-" required />
 
-    <input type="submit" value="Book Appointment" />
-  </form>
+      <label for="appointment_date">Appointment Date:</label>
+      <input id="appointment_date" type="date" name="appointment_date" required />
+     
+
+      <label for="appointment_time">Appointment Time:</label>
+      <input id="appointment_time" type="time" name="appointment_time" required />
+       <small>* Be on time, arrive 10 min early</small>
+
+      <label for="transaction_code">Transaction Code:</label>
+      <input id="transaction_code" type="text" name="transaction_code" placeholder="Enter payment code (e.g. TXN1234)" required />
+
+      <input type="submit" value="Book Appointment" />
+    </form>
+
+    <!-- Payment Section -->
+    <div class="payment-info">
+      <h3>Scan & Pay Rs. 500</h3>
+      <div class="qr">
+        <img src="image/payment.jpeg" alt="Scan QR to pay Rs. 500" />
+      </div>
+      <p>Note:
+        Enter Your Name and Mobile Number in Remarks
+      </p>
+      <p>After payment, enter the transaction code in the form to confirm your booking.
+        <img src="image/transactioncode.jpeg" alt="transaction code" height="300px">
+      </p>
+    </div>
+
   </div>
 
 </body>
