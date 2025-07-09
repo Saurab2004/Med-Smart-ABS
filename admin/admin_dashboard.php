@@ -15,20 +15,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle payment status update
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['appointment_id'], $_POST['payment_status'])) {
-    $appointment_id = intval($_POST['appointment_id']);
-    $payment_status = $_POST['payment_status'] === 'Verified' ? 'Verified' : 'Pending';
-
-    $stmt = $conn->prepare("UPDATE appointments SET payment_status = ? WHERE id = ?");
-    $stmt->bind_param("si", $payment_status, $appointment_id);
-    $stmt->execute();
-    $stmt->close();
-}
-
 // Fetch all appointments
 $result = $conn->query("SELECT * FROM appointments ORDER BY appointment_date DESC, appointment_time DESC");
-
 ?>
 
 <!DOCTYPE html>
@@ -36,10 +24,63 @@ $result = $conn->query("SELECT * FROM appointments ORDER BY appointment_date DES
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Admin Dashboard - Med Smart</title>
+<title>Appointments - Med Smart</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
-  h1 { text-align: center; margin-bottom: 30px; }
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    display: flex;
+  }
+  .sidebar {
+    width: 220px;
+    background-color: #007bff;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    padding-top: 30px;
+  }
+  .sidebar h2 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  .sidebar a {
+    display: block;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+  }
+  .sidebar a:hover {
+    background-color: #0056b3;
+  }
+  .logout-btn {
+    display: block;
+    width: 80%;
+    margin: 20px auto;
+    padding: 10px;
+    background: #dc3545;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .logout-btn:hover {
+    background: #b52b2b;
+  }
+  .main-content {
+    margin-left: 220px;
+    padding: 20px;
+    width: calc(100% - 220px);
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
   table {
     border-collapse: collapse;
     width: 100%;
@@ -60,92 +101,50 @@ $result = $conn->query("SELECT * FROM appointments ORDER BY appointment_date DES
   tr:hover {
     background-color: #f1f1f1;
   }
-  form {
-    margin: 0;
-  }
-  select {
-    padding: 5px;
-    border-radius: 5px;
-  }
-  input[type="submit"] {
-    padding: 5px 10px;
-    margin-left: 5px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  input[type="submit"]:hover {
-    background-color: #218838;
-  }
-  .logout-btn {
-    display: block;
-    margin: 20px auto 40px auto;
-    width: 100px;
-    padding: 10px;
-    background: #dc3545;
-    color: white;
-    text-align: center;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  .logout-btn:hover {
-    background: #b52b2b;
-  }
 </style>
 </head>
 <body>
 
-<h1>Admin Dashboard - Med Smart</h1>
-<a href="admin_logout.php" class="logout-btn">Logout</a>
+<div class="sidebar">
+  <h2>Med-Smart</h2>
+  <a href="admin_dashboard.php">Dashboard</a>
+  <a href="doctors.php">Doctors</a>
+  <a href="patients.php">Patients</a>
+  <a href="admin_logout.php" class="logout-btn">Logout</a>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Contact</th>
-      <th>Blood Group</th>
-      <th>Department</th>
-      <th>Appointment Date</th>
-      <th>Appointment Time</th>
-      <th>Transaction Code</th>
-      <th>Payment Status</th>
-      <th>Verify Payment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php while($row = $result->fetch_assoc()): ?>
+<div class="main-content">
+  <h1>Appointments</h1>
+
+  <table>
+    <thead>
       <tr>
-        <td><?= $row['id'] ?></td>
-        <td><?= htmlspecialchars($row['name']) ?></td>
-        <td><?= htmlspecialchars($row['contact_number']) ?></td>
-        <td><?= htmlspecialchars($row['blood_group']) ?></td>
-        <td><?= htmlspecialchars($row['department']) ?></td>
-        <td><?= htmlspecialchars($row['appointment_date']) ?></td>
-        <td><?= htmlspecialchars($row['appointment_time']) ?></td>
-        <td><?= htmlspecialchars($row['transaction_code']) ?></td>
-        <td><?= $row['payment_status'] ?></td>
-        <td>
-          <form method="POST" action="">
-            <input type="hidden" name="appointment_id" value="<?= $row['id'] ?>" />
-            <select name="payment_status">
-              <option value="Pending" <?= $row['payment_status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
-              <option value="Verified" <?= $row['payment_status'] == 'Verified' ? 'selected' : '' ?>>Verified</option>
-            </select>
-            <input type="submit" value="Update" />
-          </form>
-        </td>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Contact</th>
+        <th>Blood Group</th>
+        <th>Department</th>
+        <th>Appointment Date</th>
+        <th>Appointment Time</th>
       </tr>
-    <?php endwhile; ?>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <?php while($row = $result->fetch_assoc()): ?>
+        <tr>
+          <td><?= $row['id'] ?></td>
+          <td><?= htmlspecialchars($row['name']) ?></td>
+          <td><?= htmlspecialchars($row['contact_number']) ?></td>
+          <td><?= htmlspecialchars($row['blood_group']) ?></td>
+          <td><?= htmlspecialchars($row['department']) ?></td>
+          <td><?= htmlspecialchars($row['appointment_date']) ?></td>
+          <td><?= htmlspecialchars($row['appointment_time']) ?></td>
+        </tr>
+      <?php endwhile; ?>
+    </tbody>
+  </table>
+</div>
 
 </body>
 </html>
 
-<?php
-$conn->close();
-?>
+<?php $conn->close(); ?>

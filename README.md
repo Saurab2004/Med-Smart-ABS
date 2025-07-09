@@ -54,6 +54,6 @@ Date 2025/07/03
 
 
 for doctor :::
- Username: doctor
+ Username: medsmart
 
-Password: medsmart123
+Password: medsmart@123
