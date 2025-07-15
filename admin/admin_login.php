@@ -9,8 +9,8 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
     $servername = "localhost";
     $dbuser = "root";
@@ -18,20 +18,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dbname = "medsmart";
 
     $conn = new mysqli($servername, $dbuser, $dbpass, $dbname);
+
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT password_hash FROM admins WHERE username = ?");
+    $stmt = $conn->prepare("SELECT password FROM admins WHERE username = ?");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows === 1) {
-        $stmt->bind_result($password_hash);
+        $stmt->bind_result($db_password);
         $stmt->fetch();
 
-        if (password_verify($password, $password_hash)) {
+        if ($password === $db_password) {
             $_SESSION['admin_logged_in'] = true;
             $_SESSION['admin_username'] = $username;
             header("Location: admin_dashboard.php");
@@ -62,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   h2 { text-align: center; margin-bottom: 20px; }
   label { display: block; margin-top: 10px; font-weight: bold; }
   input[type="text"], input[type="password"] {
-    width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;
+    width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;
   }
   input[type="submit"] {
     margin-top: 20px; background-color: #007bff; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; cursor: pointer;
@@ -71,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     background-color: #0056b3;
   }
   .error { color: red; margin-top: 15px; text-align: center; }
+  .hint { color: #777; font-size: 14px; text-align: center; margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -85,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php if($error): ?>
         <div class="error"><?= htmlspecialchars($error) ?></div>
       <?php endif; ?>
+      <div class="hint">Default Username: <b>admin</b> | Password: <b>admin@123</b></div>
     </form>
   </div>
 </body>

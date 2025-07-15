@@ -132,7 +132,7 @@ $result = $conn->query("SELECT * FROM appointments ORDER BY appointment_date DES
       <?php while($row = $result->fetch_assoc()): ?>
         <tr>
           <td><?= $row['id'] ?></td>
-          <td><?= htmlspecialchars($row['name']) ?></td>
+          <td><?= htmlspecialchars($row['patient_name']) ?></td>
           <td><?= htmlspecialchars($row['contact_number']) ?></td>
           <td><?= htmlspecialchars($row['blood_group']) ?></td>
           <td><?= htmlspecialchars($row['department']) ?></td>
