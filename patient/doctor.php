@@ -1,0 +1,80 @@
+<?php
+// doctor.php
+$conn = new mysqli("localhost", "root", "", "medsmart");
+if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+
+$result = $conn->query("SELECT * FROM doctors WHERE available='Yes' ORDER BY name ASC");
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Doctors - MedSmart</title>
+<style>
+body { font-family: Arial, sans-serif; }
+.top-header { background-color: #f8f9fa; padding: 15px 0; border-bottom: 1px solid #ddd; }
+.container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0 20px; }
+.info-box { display: flex; gap: 20px; flex-wrap: wrap; }
+.info-item { background-color: #f0f4f8; padding: 10px 18px; border-radius: 8px; font-size: 15px; font-weight: 500; color: #333; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+.info-item a { color: #2a2424; text-decoration: none; margin-left: 6px; font-weight: 600; transition: color 0.3s ease; }
+.info-item a:hover { color: #000000; }
+.logo { display: flex; align-items: center; }
+.circle-letter { display: inline-block; width: 40px; height: 40px; background-color: #007bff; color: white; border-radius: 50%; text-align: center; line-height: 40px; font-weight: bold; }
+.logo-text { font-size: 24px; font-weight: bold; color: #2a56bb; }
+.book-btn { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; transition: background-color 0.3s ease; }
+.book-btn:hover { background-color: #218838; }
+.login { background-color: rgb(24,105,186); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; transition: background-color 0.3s ease; }
+.login:hover { background-color: rgb(7,125,242); }
+.doctorlist { display: flex; flex-wrap: wrap; gap: 30px; margin: 20px; }
+.doctor-card { background-color: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 20px; width: 220px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.doctor-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+.doctor-card img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 2px solid #007bff; margin-bottom: 10px; }
+.doctor-card .name { font-weight: bold; margin-bottom: 5px; color: #2a2a2a; }
+.doctor-card .details { font-size: 14px; color: #555; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="top-header">
+  <div class="container">
+    <a href="index.php" class="logo" style="text-decoration: none; color: inherit;">
+      <i class="circle-letter">Med-</i>
+      <div class="logo-text">Smart</div>
+    </a>
+    <div class="info-box">
+      <div class="info-item">📞 Emergency:<a href="tel:+9779800000000">+977-9800000000</a></div>
+      <div class="info-item">✉️ Email:<a href="mailto:medsmart1@gmail.com">medsmart1@gmail.com</a></div>
+    </div>
+    <div>
+      <a href="login.html"><button class="login">Login & Signup</button></a>
+    </div>
+  </div>
+</div>
+
+<marquee>Your Trusted Online Hospital Management System — Smart Care. Anytime. Anywhere.</marquee>
+
+<div class="doctorlist">
+<?php
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $dbImagePath = $row['image_path'];
+        $imgPath = (!empty($dbImagePath) && file_exists('../admin/' . $dbImagePath)) ? '../admin/' . $dbImagePath : '../image/doctors/default.png';
+        echo '<div class="doctor-card">';
+        echo '<img src="'.htmlspecialchars($imgPath).'" alt="Doctor">';
+        echo '<div class="name">Dr. '.htmlspecialchars($row['name']).'</div>';
+        echo '<div class="details">'.htmlspecialchars($row['specialization']).'<br>Experience: 5+ Years<br>Patients: 300+</div>';
+        // Pass doctor ID and name to appointment page
+        echo '<div><a href="appointment_form.php?doctor_id='.$row['id'].'" class="book-btn">Book Appointment</a></div>';
+        echo '</div>';
+    }
+} else {
+    echo '<p>No doctors available at the moment.</p>';
+}
+$conn->close();
+?>
+</div>
+
+</body>
+</html>
