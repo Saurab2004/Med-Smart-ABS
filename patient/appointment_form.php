@@ -16,23 +16,18 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-
 .container { max-width: 600px; background: #fff; padding: 30px 40px; margin: 30px auto; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 h2 { text-align: center; color: #007B5E; margin-bottom: 25px; }
 form label { display: block; margin: 15px 0 5px; font-weight: 600; color: #333; }
-input { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; transition: 0.3s border ease; }
-input:focus { border-color: #007B5E; outline: none; }
+input, select { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; transition: 0.3s border ease; }
+input:focus, select:focus { border-color: #007B5E; outline: none; }
 input[type="submit"] { background-color: #007B5E; color: white; font-weight: bold; border: none; cursor: pointer; padding: 12px; margin-top: 25px; transition: background-color 0.3s ease; border-radius: 6px; }
 input[type="submit"]:hover { background-color: #005f48; }
-@media print {
-  body { background: none; }
-  .container { box-shadow: none; border: 1px solid #000; padding: 20px; }
-  input, input[type="submit"] { border: 1px solid #000 !important; color: black !important; }
-  input[type="submit"] { background: none !important; color: black !important; border: 1px solid #000 !important; }
-}
+input[readonly] { background-color: #f1f1f1; cursor: not-allowed; }
 </style>
 </head>
 <body>
 
 <div class="container">
 <h2>Book an Appointment</h2>
-<form action="appointment.php" method="POST">
+<form action="appointment.php" method="POST" enctype="multipart/form-data">
     <label for="name">Name:</label>
     <input id="name" type="text" name="name" required />
 
@@ -72,23 +67,27 @@ input[type="submit"]:hover { background-color: #005f48; }
     <label for="appointment_time">Appointment Time:</label>
     <input id="appointment_time" type="time" name="appointment_time" required />
 
-    <!-- Hidden doctor inputs -->
+    <label for="patient_image">Upload Image/Report (optional):</label>
+    <input id="patient_image" type="file" name="patient_image" accept="image/*" />
+
+    <label for="doctor_name">Doctor:</label>
+    <input type="text" name="doctor_name" value="<?= $doctor_name ?>" readonly />
+
+    <label for="department">Department:</label>
+    <input type="text" name="department" value="<?= $department ?>" readonly />
+
     <input type="hidden" name="doctor_id" value="<?= $doctor_id ?>">
-    <input type="hidden" name="doctor_name" value="<?= $doctor_name ?>">
-    <input type="hidden" name="department" value="<?= $department ?>">
 
     <input type="submit" value="Book Appointment" />
 </form>
 </div>
 
 <script>
-// Contact starts with +977
 const contactInput = document.getElementById('contact_number');
 contactInput.addEventListener('focus', function () {
     if (!this.value.startsWith('+977')) { this.value = '+977'; }
 });
 
-// Restrict date & time
 const dateInput = document.getElementById("appointment_date");
 const today = new Date().toISOString().split("T")[0];
 dateInput.setAttribute("min", today);

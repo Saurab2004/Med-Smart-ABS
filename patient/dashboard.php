@@ -23,7 +23,6 @@ if(isset($_POST['update_info'])){
     $sql = "UPDATE patients SET name='$name', age='$age', gender='$gender', contact_number='$contact', blood_group='$blood' WHERE id='$patient_id'";
     if($conn->query($sql)){
         $update_message = "Information updated successfully!";
-        // Update session variables
         $_SESSION['patient_name'] = $name;
         $_SESSION['patient_age'] = $age;
         $_SESSION['patient_gender'] = $gender;
@@ -34,8 +33,11 @@ if(isset($_POST['update_info'])){
     }
 }
 
-
-
+// Fetch all appointments for this patient
+$stmt = $conn->prepare("SELECT a.*, d.name AS doctor_name FROM appointments a LEFT JOIN doctors d ON a.doctor_id=d.id WHERE a.patient_name=? ORDER BY a.appointment_date DESC, a.appointment_time DESC");
+$stmt->bind_param("s", $_SESSION['patient_name']);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +61,8 @@ table { width: 100%; border-collapse: collapse; margin-top: 20px; }
 table th, table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
 table th { background-color: #007bff; color: white; }
 p.message { color: green; font-weight: bold; text-align: center; }
+a.report-link { color: #28a745; font-weight: bold; text-decoration: none; }
+a.report-link:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -97,15 +101,40 @@ p.message { color: green; font-weight: bold; text-align: center; }
         <button type="submit" name="update_info">Update Information</button>
     </form>
 
-    <h2>My Reports</h2>
+    <h2>My Appointments & Reports</h2>
     <table>
         <tr>
             <th>Date</th>
-            <th>Title</th>
-            <th>Description</th>
+            <th>Time</th>
+            <th>Department</th>
             <th>Doctor</th>
+            <th>Status</th>
+            <th>Patient Report</th>
+            <th>Doctor Report</th>
         </tr>
-
+        <?php while($row = $result->fetch_assoc()): ?>
+        <tr>
+            <td><?= htmlspecialchars($row['appointment_date']) ?></td>
+            <td><?= htmlspecialchars($row['appointment_time']) ?></td>
+            <td><?= htmlspecialchars($row['department']) ?></td>
+            <td><?= htmlspecialchars($row['doctor_name']) ?></td>
+            <td><?= htmlspecialchars($row['status']) ?></td>
+            <td>
+                <?php if(!empty($row['report_path'])): ?>
+                    <a href="<?= htmlspecialchars($row['report_path']) ?>" target="_blank" class="report-link">View</a>
+                <?php else: ?>
+                    Not uploaded
+                <?php endif; ?>
+            </td>
+            <td>
+                <?php if(!empty($row['doctor_report_path'])): ?>
+                    <a href="<?= htmlspecialchars($row['doctor_report_path']) ?>" target="_blank" class="report-link">View</a>
+                <?php else: ?>
+                    Pending
+                <?php endif; ?>
+            </td>
+        </tr>
+        <?php endwhile; ?>
     </table>
 </div>
 
