@@ -1,0 +1,113 @@
+<?php
+session_start();
+$conn = new mysqli("localhost", "root", "", "medsmart");
+if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+
+// Redirect if not logged in
+if(!isset($_SESSION['patient_id'])){
+    header("Location: login.php");
+    exit;
+}
+
+$patient_id = $_SESSION['patient_id'];
+$update_message = "";
+
+// Handle update request
+if(isset($_POST['update_info'])){
+    $name = $conn->real_escape_string($_POST['name']);
+    $age = intval($_POST['age']);
+    $gender = $conn->real_escape_string($_POST['gender']);
+    $contact = $conn->real_escape_string($_POST['contact']);
+    $blood = $conn->real_escape_string($_POST['blood']);
+
+    $sql = "UPDATE patients SET name='$name', age='$age', gender='$gender', contact_number='$contact', blood_group='$blood' WHERE id='$patient_id'";
+    if($conn->query($sql)){
+        $update_message = "Information updated successfully!";
+        // Update session variables
+        $_SESSION['patient_name'] = $name;
+        $_SESSION['patient_age'] = $age;
+        $_SESSION['patient_gender'] = $gender;
+        $_SESSION['patient_contact'] = $contact;
+        $_SESSION['patient_blood'] = $blood;
+    } else {
+        $update_message = "Failed to update information!";
+    }
+}
+
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background: #f4f9ff; }
+.top-header { background-color: #007bff; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
+.top-header a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
+.container { max-width: 1000px; margin: 30px auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+h2 { color: #007bff; margin-bottom: 20px; }
+form label { display: block; margin-top: 15px; font-weight: bold; }
+form input, form select { width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; }
+form button { margin-top: 20px; padding: 10px 15px; border: none; border-radius: 6px; background-color: #007bff; color: white; cursor: pointer; font-weight: bold; }
+form button:hover { background-color: #0056b3; }
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+table th, table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+table th { background-color: #007bff; color: white; }
+p.message { color: green; font-weight: bold; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="top-header">
+    <div>Med-Smart | Patient Dashboard</div>
+    <div>
+        <a href="index.php">Home</a>
+        <a href="logout.php">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>My Information</h2>
+    <?php if($update_message) echo "<p class='message'>$update_message</p>"; ?>
+    <form method="POST" action="">
+        <label>Name</label>
+        <input type="text" name="name" value="<?php echo $_SESSION['patient_name']; ?>" required>
+
+        <label>Age</label>
+        <input type="number" name="age" value="<?php echo $_SESSION['patient_age']; ?>" required>
+
+        <label>Gender</label>
+        <select name="gender" required>
+            <option value="Male" <?php if($_SESSION['patient_gender']=='Male') echo 'selected'; ?>>Male</option>
+            <option value="Female" <?php if($_SESSION['patient_gender']=='Female') echo 'selected'; ?>>Female</option>
+            <option value="Other" <?php if($_SESSION['patient_gender']=='Other') echo 'selected'; ?>>Other</option>
+        </select>
+
+        <label>Contact Number</label>
+        <input type="text" name="contact" value="<?php echo $_SESSION['patient_contact']; ?>" required>
+
+        <label>Blood Group</label>
+        <input type="text" name="blood" value="<?php echo $_SESSION['patient_blood']; ?>" required>
+
+        <button type="submit" name="update_info">Update Information</button>
+    </form>
+
+    <h2>My Reports</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Doctor</th>
+        </tr>
+
+    </table>
+</div>
+
+</body>
+</html>

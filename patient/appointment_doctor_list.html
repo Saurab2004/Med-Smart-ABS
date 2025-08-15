@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
+  <title>Book Appointment</title>
+  <style>
+    /* Body and Container */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f9ff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .appointment-container {
+      width: 90%;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      color: #2980b9;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    /* Specialities Grid */
+    .specialities {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .speciality {
+      background: #eaf6ff;
+      border-radius: 10px;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      font-size: 16px;
+      color: #2c3e50;
+      text-decoration: none;
+    }
+
+    .speciality i, .speciality span {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+
+    /* Icon Colors */
+    .cardiology { color: #ff4d4d; }      
+    .pulmonology { color: #4CAF50; }    
+    .infectious { color: #f39c12; }     
+    .ent { color: #9b59b6; }            
+    .neurology { color: #3498db; }      
+    .oncology { color: #e74c3c; }       
+    .general { color: #16a085; }        
+    .orthopedics { color: #e67e22; }    
+
+    .speciality:hover {
+      background: #d0f0ff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="appointment-container">
+    <h2>Online OPD Appointment</h2>
+
+    <h3>Specialities</h3>
+    <div class="specialities">
+      <a href="doctor.php?dept=Cardiology" class="speciality">
+        <i class="fa-solid fa-heart-pulse cardiology"></i> Cardiology
+      </a>
+      <a href="doctor.php?dept=Pulmonology" class="speciality">
+        <i class="fa-solid fa-lungs pulmonology"></i> Pulmonology
+      </a>
+      <a href="doctor.php?dept=Infectious Diseases" class="speciality">
+        <i class="fa-solid fa-head-side-virus infectious"></i> Infectious Diseases
+      </a>
+      <a href="doctor.php?dept=ENT" class="speciality">
+        <span class="ent">👂</span> ENT
+      </a>
+      <a href="doctor.php?dept=Neurology" class="speciality">
+        <i class="fa-solid fa-brain neurology"></i> Neurology
+      </a>
+      <a href="doctor.php?dept=Oncology" class="speciality">
+        <i class="fa-solid fa-virus oncology"></i> Oncology
+      </a>
+      <a href="doctor.php?dept=General Checkup" class="speciality">
+        <i class="fa-solid fa-stethoscope general"></i> General Checkup
+      </a>
+      <a href="doctor.php?dept=Orthopedics" class="speciality">
+        <span style="font-size:20px; margin-right:10px; color:#e67e22;">🦴</span> Orthopedics
+      </a>
+      <a href="doctor.php" class="speciality">
+        <i class="fa-solid fa-user-doctor"></i> All Doctors
+      </a>
+    </div>
+  </div>
+</body>
+</html>

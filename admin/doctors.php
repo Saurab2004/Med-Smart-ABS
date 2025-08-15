@@ -188,6 +188,7 @@ input[type="submit"] { background-color: #28a745; color: white; border: none; pa
 
         <div class="form-group">
           <label>Specialization</label>
+          
           <input type="text" name="specialization" value="<?= htmlspecialchars($edit['specialization']) ?>" required>
         </div>
 
@@ -231,9 +232,20 @@ input[type="submit"] { background-color: #28a745; color: white; border: none; pa
         </div>
 
         <div class="form-group">
-          <label>Specialization</label>
-          <input type="text" name="specialization" placeholder="Specialization" required>
-        </div>
+  <label>Specialization</label>
+  <select name="specialization" required>
+    <option value="">-- Select Specialization --</option>
+    <option value="Cardiology" <?= (isset($edit) && $edit['specialization'] === 'Cardiology') ? 'selected' : '' ?>>Cardiology ❤️</option>
+    <option value="Pulmonology" <?= (isset($edit) && $edit['specialization'] === 'Pulmonology') ? 'selected' : '' ?>>Pulmonology 🫁</option>
+    <option value="Infectious Diseases" <?= (isset($edit) && $edit['specialization'] === 'Infectious Diseases') ? 'selected' : '' ?>>Infectious Diseases 🧬</option>
+    <option value="ENT" <?= (isset($edit) && $edit['specialization'] === 'ENT') ? 'selected' : '' ?>>ENT 👂</option>
+    <option value="Neurology" <?= (isset($edit) && $edit['specialization'] === 'Neurology') ? 'selected' : '' ?>>Neurology 🧠</option>
+    <option value="Oncology" <?= (isset($edit) && $edit['specialization'] === 'Oncology') ? 'selected' : '' ?>>Oncology 🦠</option>
+    <option value="General Checkup" <?= (isset($edit) && $edit['specialization'] === 'General Checkup') ? 'selected' : '' ?>>General Checkup 🩺</option>
+    <option value="Orthopedics" <?= (isset($edit) && $edit['specialization'] === 'Orthopedics') ? 'selected' : '' ?>>Orthopedics 🦴</option>
+  </select>
+</div>
+
 
         <div class="form-group">
           <label>Contact Number</label>
